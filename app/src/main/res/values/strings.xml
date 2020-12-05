@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MVVM TODO 2.0</string>
+    <string name="search">Search</string>
+    <string name="sort">Sort</string>
+    <string name="hide_completed">Hide completed</string>
+    <string name="delete_all_completed">Delete all completed</string>
+    <string name="sort_by_date_created">Sort by date created</string>
+    <string name="sort_by_name">Sort by name</string>
+</resources>
