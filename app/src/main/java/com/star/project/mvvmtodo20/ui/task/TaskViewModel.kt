@@ -7,6 +7,8 @@ import com.star.project.mvvmtodo20.data.PreferencesManager
 import com.star.project.mvvmtodo20.data.SortOrder
 import com.star.project.mvvmtodo20.data.Task
 import com.star.project.mvvmtodo20.data.TaskDao
+import com.star.project.mvvmtodo20.ui.ADD_TASK_RESULT_OK
+import com.star.project.mvvmtodo20.ui.EDIT_TASK_RESULT_OK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,10 +71,32 @@ class TaskViewModel @ViewModelInject constructor(
         taskEventChannel.send(TaskEvent.NavigateToAddTaskScreen)
     }
 
+    fun onAddEditResult(result: Int) {
+        when(result){
+            ADD_TASK_RESULT_OK -> {
+                showTaskSavedConfirmationMessage("Task added")
+            }
+            EDIT_TASK_RESULT_OK -> {
+                showTaskSavedConfirmationMessage("Task Updated")
+            }
+        }
+    }
+
+    private fun showTaskSavedConfirmationMessage(text: String) = viewModelScope.launch {
+        taskEventChannel.send(TaskEvent.ShowTaskSavedConfirmationMessage(text))
+    }
+
+    fun onDeleteAllCompletedClick() = viewModelScope.launch {
+        taskEventChannel.send(TaskEvent.NavigateToDeleteAllCompletedScreen)
+    }
+
+
     sealed class TaskEvent{
         object NavigateToAddTaskScreen: TaskEvent()
         data class NavigateToEditTaskScreen(val task: Task) : TaskEvent()
         data class ShowUndoDeleteTaskMessage(val task: Task): TaskEvent()
+        data class ShowTaskSavedConfirmationMessage(val msg : String): TaskEvent()
+        object NavigateToDeleteAllCompletedScreen : TaskEvent()
     }
 }
 
